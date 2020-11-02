@@ -3,19 +3,23 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-const cors = require('cors')
+const cors = require('cors');
 const mongoose = require('mongoose');
 
 
-mongoose.connect('mongodb+srv://chrisramfon:Cr051097@c1.rwove.azure.mongodb.net/MEGA', { useNewUrlParser: true, useUnifiedTopology: true });
-require('./models/usuario') //Schema a utilizar en el proyecto
+mongoose.connect('mongodb+srv://Aldo:Expresion-13@cluster0.vfxf0.mongodb.net/Mega', { useNewUrlParser: true, useUnifiedTopology: true });
+
+require('./models/empleado') //Schema a utilizar en el proyecto
+
+var indexRouter = require('./routes/index');
+var usersRouter = require('./routes/users');
+var empleadoRouter = require('./routes/empleados');
+
 
 var app = express();
 
 app.use(cors({
-    "origin": "http://localhost:3000",
+    "origin": "http://localhost:4200",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
     "preflightContinue": false,
     "optionsSuccessStatus": 204
@@ -35,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/empleados', empleadoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
