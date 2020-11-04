@@ -5,7 +5,7 @@ const { check, validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const Empleados = mongoose.model('Empleado'); //importar el schema del models
 
-//METODO CONSULTAR
+//METODO CONSULTAR empleados
 router.get('/', async(req, res, next) => { //llenar el objeto una sola vez
     await Empleados.find((err,empleado) => {
             if(err){return res.send(err)}
