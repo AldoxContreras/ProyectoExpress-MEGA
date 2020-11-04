@@ -5,17 +5,18 @@ const { check, validationResult } = require('express-validator');
 const mongoose = require('mongoose');
 const Empleados = mongoose.model('Empleado'); //importar el schema del models
 
-router.get('/', async(req, res, ) => { //llenar el objeto una sola vez
-    await Empleados.find((err, empleado) => {
-            if (err) { return res.send(err) }
-            res.send(empleado)
+//METODO CONSULTAR
+router.get('/', async(req, res, next) => { //llenar el objeto una sola vez
+    await Empleados.find((err,empleado) => {
+            if(err){return res.send(err)}
+            res.send(empleado);
         })
         //res.send('Estas en usuario');
 });
 
 //Buscar por un campo
 router.post('/buscar', async(req, res, next) => {
-    const empleados = await Empleados.find({ nombre: req.body.buscar })
+    const empleados = await Empleados.find({nombre: req.body.buscar})
 
     if (!empleados) {
         return res.status(400).send("Empleado no encontrado")
@@ -24,63 +25,78 @@ router.post('/buscar', async(req, res, next) => {
     }
 })
 
+//METODO DE INSERCION
 router.post('/', [
-    check('_id').isString({ min: 1 }),
-    check('Nombre').isString({ min: 1 }),
-    check('Apellido1').isString({ min: 8 }),
-    check('Apellido2').isString(),
-    check('Direccion').isString(),
-    check('Telefono').isString(),
-    check('Estado').isString(),
+    check('id').isLength({min:1}),
+    check('Nombre').isLength({min:1}),
+    check('Apellido1').isLength({min:1}),
+    check('Apellido2').isLength({min:1}),
+    check('Direccion').isLength({min:1}),
+    check('Telefono').isLength({min:1}),
+    check('Estado').isLength({min:1}),
 ], async(req, res) => {
     const errors = validationResult(req); //
-
-    if (!errors.isEmpty()) {
-        return res.status(422).json({ errors: errors.array() }); //status 422 entidad no procesable
+    if(!errors.isEmpty()){
+        return res.status(422).json({errors: errors.array()}); //status 422 entidad no procesable
     } //
+
     empleado = new Empleados({
-        _id: req.body._id,
-        Nombre: req.body.Nombre,
-        Apellido1: req.body.Apellido1, //ponemos variable  nombrecifrado para que mande cifrado
-        Apellido2: req.body.Apellido2,
-        Direccion: req.body.Direccion,
-        Telefono: req.body.Telefono,
-        Estado: req.body.Estado,
+        id: req.body.id,
+        Nombre:req.body.Nombre,
+        Apellido1:req.body.Apellido1, //ponemos variable  nombrecifrado para que mande cifrado
+        Apellido2:req.body.Apellido2,
+        Direccion:req.body.Direccion,
+        Telefono:req.body.Telefono,
+        Estado:req.body.Estado,
         //llamar los datos del formulario
     })
-    await Empleados.save() //funcion  de guardado
-    res.status(200).send(Empleados) //funcion de repuesta 
+    await empleado.save() //funcion  de guardado
+    res.status(200).send(empleado) //funcion de repuesta 
+});
+
+//METODO MODIFICAR
+router.put('/', async(req, res) => {
+    const empleado = await Empleados.findOne({id:req.body.id})
+    
+    if(!empleado){
+        return res.status(400).send("Empleado no encontrado")
+      }
+
+    empleado_mod = await Empleados.findOneAndUpdate({id:req.body.id},
+    {
+        Nombre:req.body.Nombre,
+        Apellido1:req.body.Apellido1,
+        Apellido2:req.body.Apellido2,
+        Direccion:req.body.Direccion,
+        Telefono:req.body.Telefono,
+        Estado:req.body.Estado,
+    }, 
+    {
+        new: true
+    })
+    res.send(empleado_mod)
 });
 
 
-//Modificar
-router.put('/', async(req, res) => {
-    const empleadobusc = await Empleados.findOneAndUpdate({ _id: req.body._id }, {
-        _id: req.body._id,
-        Nombre: req.body.Nombre,
-        Apellido1: req.body.Apellido1,
-        Apellido2: req.body.Apellido2,
-        Direccion: req.body.Direccion,
-        Telefono: req.body.Telefono,
-        Estado: req.body.Estado,
-    }, {
-        new: true
-    })
-    res.status(201).send(empleadobusc)
-})
+//METODO ELIMINAR
+router.post('/borrar', async(req,res) => {
+    const empleado = await Empleados.findOne({id:req.body.id})
+    if(!empleado){
+        return res.status(400).send("Empleado no encontrado")
+    }
 
+    empleado_eliminado= await Empleados.findOneAndDelete({id:req.body.id})
 
-//eliminar
-router.post('/borrar', async(req, res) => {
-    await Empleados.findOneAndDelete({ _id: req.body._id },
-        function(err, empleadoeliminado) {
-            if (err) {
-                res.send(err)
-            }
-            res.json({ Mensaje: 'Empleado eliminado' })
-        })
-})
+  res.send(empleado)
+});
 
+router.get('/:codigo', async(req,res)=>{
+    empleado= await Empleados.findOne({id:req.params.id})
+    if(!empleado){
+      return res.status(404).send("Empleado no encontrado")
+    }
+    res.status(200).send(empleado)
+  });
 
 
 

@@ -6,14 +6,16 @@ var logger = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-
-mongoose.connect('mongodb+srv://Aldo:Expresion-13@cluster0.vfxf0.mongodb.net/Mega', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://NormaG:Perrafina1_@cluster0.7swjn.mongodb.net/MEGA', {useNewUrlParser: true, useUnifiedTopology: true });
 
 require('./models/empleado') //Schema a utilizar en el proyecto
+require('./models/cliente')
+require('./models/usuario')
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersRouter = require('./routes/usuarios');
 var empleadoRouter = require('./routes/empleados');
+var clienteRouter = require('./routes/clientes')
 
 
 var app = express();
@@ -38,8 +40,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/empleados', empleadoRouter);
+app.use('/usuario', usersRouter);
+app.use('/empleado', empleadoRouter);
+app.use('/cliente', clienteRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

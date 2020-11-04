@@ -2,35 +2,34 @@ const mongoose = require('mongoose')
 
 mongoose.set('useCreateIndex', true)
 const EmpleadoSchema = new mongoose.Schema({
-    _id: {
+    id:{
         type: String,
         required: true,
         unique: true
     },
-    Nombre: {
+    Nombre:{
         type: String,
         required: true
     },
-    Apellido1: {
+    Apellido1:{
         type: String,
         required: true,
     },
-    Apellido2: {
+    Apellido2:{
         type: String,
-        required: false,
+        //required: false,
     },
-    Direccion: {
+    Direccion:{
         type: String,
-        required: true,
-
+        required: true
     },
-    Telefono: {
+    Telefono:{
         type: String,
-        required: true,
+        required: true
     },
-    Estado: {
+    Estado:{
         type: String,
-        required: true,
+        required: true
     }
 
 
