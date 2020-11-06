@@ -15,8 +15,7 @@ const UsuarioSchema = new mongoose.Schema({
     },
     Contrasena:{
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     Tipo:{
         type: String,
