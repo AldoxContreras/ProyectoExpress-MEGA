@@ -61,7 +61,7 @@ router.put('/', async(req,res)=>{
 
 
 //Eliminacion de cliente
-router.post('/Eliminar', async(req,res)=>{
+router.post('/eliminar', async(req,res)=>{
     const cliente = await Clientes.findOne({id: req.body.id});
     if(!cliente){
         return res.status(400).send("Cliente no encontrado");
