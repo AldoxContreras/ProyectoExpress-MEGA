@@ -79,4 +79,29 @@ router.get('/:id', async(req,res)=>{
     }
     res.status(200).send(cliente);
 });//Fin buscar cliente individual
+
+
+//Agregar cita
+router.put('/nuevacita', async(req,res)=>{
+ let cliente = await Clientes.findOne({id: req.body.id});
+ if(!cliente){
+     return res.status(400).send("Cliente no encontrado");
+ }
+
+ array1 = [{
+     id_cita: req.body.id_cita,
+     Fecha_Hora: req.body.Fecha_Hora,
+     Motivo: req.body.Motivo,
+     Estado: req.body.Estado,
+     id_Empleado: req.body.id_Empleado,
+     Matricula_Vehiculo: req.body.Matricula_Vehiculo
+ }];
+
+ cliente.Cita = cliente.Cita.concat(array1);
+
+ cliente.save();
+
+ res.status(201).send(cliente);
+
+});
 module.exports = router;
