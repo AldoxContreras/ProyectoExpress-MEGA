@@ -9,7 +9,7 @@ const Citas = mongoose.model('Cita'); //importar el schema del models
 router.get('/', async(req, res, next) => { //llenar el objeto una sola vez
     await Citas.find((err, cita) => {
             if (err) { return res.send(err) }
-            res.send('Estas en cita');
+            // res.send('Estas en cita');
         })
         //res.send('Estas en usuario');
 });
@@ -27,7 +27,7 @@ router.post('/buscar', async(req, res, next) => {
 
 //METODO DE INSERCION
 router.post('/', [
-    check('_id').isLength(),
+    check('id').isLength({ min: 1 }),
     check('Fecha').isLength({ min: 10 }),
     check('Hora').isLength({ min: 5 }),
     check('Estado').isLength({ min: 9 }),
@@ -41,17 +41,27 @@ router.post('/', [
     } //
     cita = new Citas({
         id: req.body.id,
-        Fecha: req.body.Fecha,
-        Hora: req.body.Hora, //ponemos variable  nombrecifrado para que mande cifrado
-        Estado: req.body.Estado,
-        Id_Empleado: req.body.Id_Empleado,
-        Telefono: req.body.Telefono,
-        Matricula_Vehiculo: req.body.Matricula_Vehiculo,
-        //llamar los datos del formulario
+
+        clientes: {
+            id: req.body.id,
+            Nombre: req.body.Nombre,
+            Apellido1: req.body.Apellido1,
+            Apelldio2: req.body.Apellido2,
+        },
+        citas: [{
+            id: req.body.id,
+            Fecha: req.body.Fecha,
+            Hora: req.body.Hora,
+            Motivo: req.body.Motivo,
+            Estado: req.body.Estado,
+            Id_Empleado: req.body.Id_Empleado,
+            Matricula_Vehiculo: req.body.Matricula_Vehiculo,
+        }],
+
     })
     await cita.save() //funcion  de guardado
     res.status(200).send(cita) //funcion de repuesta 
-});
+})
 
 //METODO MODIFICAR
 router.put('/', async(req, res) => {
@@ -64,7 +74,7 @@ router.put('/', async(req, res) => {
     cita_mod = await Citas.findOneAndUpdate({ id: req.body.id }, {
         id: req.body.id,
         Fecha: req.body.Fecha,
-        Hora: req.body.Hora, //ponemos variable  nombrecifrado para que mande cifrado
+        Hora: req.body.Hora, //AQUI ES PARA LLAMAR A LAS VARIABLES
         Estado: req.body.Estado,
         Id_Empleado: req.body.Id_Empleado,
         Telefono: req.body.Telefono,
@@ -88,7 +98,7 @@ router.post('/borrar', async(req, res) => {
     res.send(cita)
 });
 
-router.get('/:codigo', async(req, res) => {
+router.get('/:id', async(req, res) => {
     cita = await Citas.findOne({ id: req.params.id })
     if (!cita) {
         return res.status(404).send("Cita no encontrado")
