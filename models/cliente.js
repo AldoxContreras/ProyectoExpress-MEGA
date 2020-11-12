@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
+
 const ClienteSchema = new mongoose.Schema({
     id: {type: String},
     Nombre: {type: String, required: true},
@@ -9,18 +10,19 @@ const ClienteSchema = new mongoose.Schema({
     Telefono: {type: String},
     Estado: {type: String},
     Cita: [{
-        id_cita: {type: Number},
+        id_cita: {type: Number, unique: false},
         Fecha_Hora: {type: Date},
         Motivo: {type: String},
         Estado: {type: String},
         id_Empleado: {type: String},
         Matricula_Vehiculo: {type: String}
-    }],
+    }, {sparse: true}],
     Vehiculo: [{
-        Matricula: {type: String, unique: true},
+        Matricula: {type: String, unique: false},
         Marca: {type: String},
         Modelo: {type: String}
-    }]
+    }, {unique: false}]
 
 });
 mongoose.model('Cliente', ClienteSchema);
+ClienteSchema.index({id_cita: 1}, {sparse: true});
