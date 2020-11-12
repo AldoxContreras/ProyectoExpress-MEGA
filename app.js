@@ -6,8 +6,7 @@ var logger = require('morgan');
 const cors = require('cors');
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://chrisramfon:Cr051097@c1.rwove.azure.mongodb.net/MEGA', { useNewUrlParser: true, useUnifiedTopology: true });
-
+mongoose.connect('mongodb+srv://NormaG:Perrafina1_@cluster0.7swjn.mongodb.net/MEGA', { useNewUrlParser: true, useUnifiedTopology: true });
 require('./models/empleado') //Schema a utilizar en el proyecto
 require('./models/cliente')
 require('./models/usuario')

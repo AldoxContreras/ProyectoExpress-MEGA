@@ -100,4 +100,39 @@ router.get('/:codigo', async(req,res)=>{
     res.status(200).send(usuario)
   });
 
+
+//-------------------------- Sección móvil -----------------------------------
+
+//Inicio de sesión para móvil
+router.post('/iniciocliente', [
+    check('Usuario').isLength({min: 1}),
+    check('Contrasena').isLength({min: 5})
+], async(req, res)=>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty){//Valida que no existan errores
+        return res.status(422).json({errors: errors.array()});
+    }
+    //Sección de buscar al usuario y validar que exista
+    let usuario = await Usuarios.findOne({Usuario: req.body.Usuario});
+    if(!usuario){
+        return res.status(400).send('Usuario o contraseña incorrecto')
+    }
+    //Seccion donde compara la contraseña del formulario con la de la BDD
+    const comparapass = await bcrypt.compare(req.body.Contrasena, usuario.Contrasena);
+    if(!comparapass){
+        return res.status(400).sent('Usuario o contraseña incorrecto');
+    }
+    //Valida que el usuario sea del tipo cliente
+    if(usuario.Tipo == "C"){
+        const jwtoken = usuario.generadorJWT();
+        const envio = jwtoken+","+usuario.Usuario+","+usuario.Tipo;
+        res.status(201).send({envio});
+    }else{
+        return res.status(400).send('Usuario o contraseña incorrecto');
+    }
+
+});//Fin inicio sesión para móvil
+
+
+
 module.exports = router;
