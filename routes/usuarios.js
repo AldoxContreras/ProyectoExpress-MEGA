@@ -4,6 +4,7 @@ const { check, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const Usuarios = mongoose.model('Usuario');
+const Clientes = mongoose.model('Cliente');
 
 //METODO CONSULTAR TODO
 router.get('/', async(req, res, next) => { //llenar el objeto una sola vez
@@ -13,6 +14,23 @@ router.get('/', async(req, res, next) => { //llenar el objeto una sola vez
         })
         //res.send('Estas en usuario');
 });
+
+/*router.get('/', async(req,res)=>{
+    await Usuarios.find({Tipo: "C"},(err,usuario)=>{
+        if(err){
+            return res.send(err);
+        }
+         Clientes.find((err, cliente)=>{
+            if(err){
+                return res.send(err);
+            }
+            cliente = {Usuario: usuario, Cliente: cliente}
+            res.send(cliente);
+        })
+    })
+});
+*/
+
 //METODO INSERCION DE DATOS
 router.post('/',[
     check('id').isLength({min:1}),
@@ -99,8 +117,7 @@ router.get('/:codigo', async(req,res)=>{
     }
     res.status(200).send(usuario)
   });
-
-
+  
 //-------------------------- Sección móvil -----------------------------------
 
 //Inicio de sesión para móvil

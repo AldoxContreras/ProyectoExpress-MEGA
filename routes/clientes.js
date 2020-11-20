@@ -104,4 +104,23 @@ router.put('/nuevacita', async(req,res)=>{
  res.status(201).send(cliente);
 
 });
+
+
+//Agregar vehiculo
+router.put('/nuevovehiculo', async(req,res)=>{
+let cliente = await Clientes.findOne({id: req.body.id});
+if(!cliente){
+    return res.status(400).send("Cliente no encontrado");
+}
+arrayv = [{
+    Matricula: req.body.Matricula,
+    Marca: req.body.Marca,
+    Modelo: req.body.Modelo
+}];
+
+cliente.Vehiculo = cliente.Vehiculo.concat(arrayv);
+cliente.save();
+res.status(201).send(cliente);
+});//Fin de agregar vehiculo
+
 module.exports = router;
