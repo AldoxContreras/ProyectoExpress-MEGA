@@ -26,7 +26,7 @@ router.post('/', [
     check('Direccion').isLength({ max: 255 }),
     check('Telefono').isLength({ max: 25 })
 ], async(req, res) => {
-    cliente = new Clientes({
+    let cliente = new Clientes({
         id: req.body.id,
         Nombre: req.body.Nombre,
         Apellido1: req.body.Apellido1,
@@ -47,7 +47,7 @@ router.put('/', async(req, res) => {
     if (!cliente) {
         return res.status(400).send("Cliente no encontrado");
     }
-    clienteModificado = await Clientes.findOneAndUpdate({ id: req.body.id }, {
+    let clienteModificado = await Clientes.findOneAndUpdate({ id: req.body.id }, {
         Nombre: req.body.Nombre,
         Apellido1: req.body.Apellido1,
         Apellido2: req.body.Apellido2,
@@ -66,14 +66,14 @@ router.post('/eliminar', async(req, res) => {
     if (!cliente) {
         return res.status(400).send("Cliente no encontrado");
     }
-    cliente_eliminado = await Clientes.findOneAndDelete({ id: req.body.id });
+    let cliente_eliminado = await Clientes.findOneAndDelete({ id: req.body.id });
     res.send(cliente);
 }); //Fin de eliminacion de cliente
 
 
 //Buscar cliente individual
 router.get('/:id', async(req, res) => {
-    cliente = await Clientes.findOne({ id: req.params.id });
+    let cliente = await Clientes.findOne({ id: req.params.id });
     if (!cliente) {
         return res.status(400).send("Cliente no encontrado");
     }
@@ -88,7 +88,7 @@ router.put('/nuevacita', async(req, res) => {
         return res.status(400).send("Cliente no encontrado");
     }
 
-    array1 = [{
+    let array1 = [{
         id_cita: req.body.id_cita,
         Fecha_Hora: req.body.Fecha_Hora,
         Motivo: req.body.Motivo,
@@ -112,7 +112,7 @@ router.put('/nuevovehiculo', async(req, res) => {
     if (!cliente) {
         return res.status(400).send("Cliente no encontrado");
     }
-    arrayv = [{
+    let arrayv = [{
         Matricula: req.body.Matricula,
         Marca: req.body.Marca,
         Modelo: req.body.Modelo
