@@ -136,7 +136,7 @@ router.post('/iniciocliente', [
     //Seccion donde compara la contraseña del formulario con la de la BDD
     const comparapass = await bcrypt.compare(req.body.Contrasena, usuario.Contrasena);
     if (!comparapass) {
-        return res.status(400).sent('Usuario o contraseña incorrecto');
+        return res.status(400).send('Usuario o contraseña incorrecto');
     }
     //Valida que el usuario sea del tipo cliente
     if (usuario.Tipo == "C") {

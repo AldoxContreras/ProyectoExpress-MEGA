@@ -87,9 +87,9 @@ router.put('/nuevacita', async(req, res) => {
     if (!cliente) {
         return res.status(400).send("Cliente no encontrado");
     }
-
+    let numero = cliente.Cita.length + 1;
     let array1 = [{
-        id_cita: req.body.id_cita,
+        id_cita: numero,
         Fecha_Hora: req.body.Fecha_Hora,
         Motivo: req.body.Motivo,
         Estado: req.body.Estado,
