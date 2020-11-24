@@ -48,7 +48,7 @@ router.post('/', [
         // const  nombrecifrado=await bcrypt.hash(req.body.nombre,salt)//para que el nombre sea cifrado
         //usuario = new Usuarios(req.body)
         //llenar objetos en partes
-    usuario = new Usuarios({
+    let usuario = new Usuarios({
         id: req.body.id,
         Usuario: req.body.Usuario,
         Contrasena: contracifrado, //ponemos variable  nombrecifrado para que mande cifrado
@@ -90,7 +90,7 @@ router.put('/', async(req, res) => {
         const salt = await bcrypt.genSalt(10)
         const contracifrado = await bcrypt.hash(req.body.Contrasena, salt)
 
-        usuario_mod = await Usuarios.findByIdAndUpdate({ id: req.body.id }, { //actualizar los datos 
+        let usuario_mod = await Usuarios.findByIdAndUpdate({ id: req.body.id }, { //actualizar los datos 
             Usuario: req.body.Usuario,
             Contrasena: contracifrado
         }, {
@@ -104,12 +104,12 @@ router.post('/borrar', async(req, res) => {
     if (!usuario) {
         return res.status(400).send("usuario no encontrado")
     }
-    usuario_eliminado = await Usuarios.findOneAndDelete({ id: req.body.id })
+    let usuario_eliminado = await Usuarios.findOneAndDelete({ id: req.body.id })
     res.send(usuario)
 });
 
 router.get('/:codigo', async(req, res) => {
-    usuario = await Usuarios.findOne({ id: req.params.id })
+    let usuario = await Usuarios.findOne({ id: req.params.id })
     if (!usuario) {
         return res.status(404).send("Usuario no encontrado")
     }
