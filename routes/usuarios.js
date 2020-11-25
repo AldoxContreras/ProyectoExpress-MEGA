@@ -92,7 +92,7 @@ router.post('/borrar', async(req, res) => {
 });
 
 router.get('/:id', async(req,res)=>{
-    usuario= await Usuarios.findOne({id:req.params.id})
+    usuario= await Usuarios.findOne({id:req.params.id,Tipo:"E"})
     if(!usuario){
       return res.status(404).send("Usuario no encontrado")
     }
