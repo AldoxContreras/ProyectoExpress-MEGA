@@ -21,7 +21,6 @@ router.post('/',[
     check('Tipo').isLength({min:1}),
 ], async(req, res) => {
     const errors = validationResult(req); //
-
     if (!errors.isEmpty()) {
         return res.status(422).json({errors: errors.array()}); //status 422 entidad no procesable
     } //
@@ -41,7 +40,7 @@ router.post('/',[
 });
 
 //METODO POST LOGIN
-router.post('/iniciosesion',[ //para iniciar sesion/ inicia post
+router.post('/inicio',[ //para iniciar sesion/ inicia post
     check('Usuario').isLength(), //validacion 
     check('Contrasena').isLength({min:5}) //validacion 
 ], async(req, res) => {
@@ -72,7 +71,7 @@ router.put('/', async(req,res) => {
     const salt = await bcrypt.genSalt(10)
     const contracifrado = await bcrypt.hash(req.body.Contrasena,salt)
 
-    usuario_mod = await Usuarios.findByIdAndUpdate({id:req.body.id}, 
+    usuario_mod = await Usuarios.findOneAndUpdate({id:req.body.id}, 
     { //actualizar los datos 
         Usuario:req.body.Usuario,
         Contrasena: contracifrado 
@@ -92,8 +91,8 @@ router.post('/borrar', async(req, res) => {
     res.send(usuario)
 });
 
-router.get('/:codigo', async(req,res)=>{
-    usuario= await Usuarios.findOne({id:req.params.id})
+router.get('/:id', async(req,res)=>{
+    usuario= await Usuarios.findOne({id:req.params.id,Tipo:"E"})
     if(!usuario){
       return res.status(404).send("Usuario no encontrado")
     }
