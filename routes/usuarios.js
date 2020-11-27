@@ -39,6 +39,7 @@ router.post('/', [
     check('Tipo').isLength({ min: 1 }),
 ], async(req, res) => {
     const errors = validationResult(req); //
+
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() }); //status 422 entidad no procesable
     } //
@@ -107,8 +108,8 @@ router.post('/borrar', async(req, res) => {
     res.send(usuario)
 });
 
-router.get('/:id', async(req, res) => {
-    let usuario = await Usuarios.findOne({ id: req.params.id, Tipo: "E" })
+router.get('/:codigo', async(req, res) => {
+    let usuario = await Usuarios.findOne({ id: req.params.id })
     if (!usuario) {
         return res.status(404).send("Usuario no encontrado")
     }
