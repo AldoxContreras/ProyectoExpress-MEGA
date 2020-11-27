@@ -80,8 +80,11 @@ router.put('/', async(req,res) => {
         new: true
     })
     res.send(usuario_mod)
-})
+});
 //METODO ELIMINAR
+
+
+    //METODO ELIMINAR
 router.post('/borrar', async(req, res) => {
     const usuario = await Usuarios.findOne({id:req.body.id})
     if (!usuario) {

@@ -7,13 +7,12 @@ const ArduinoSchema = new mongoose.Schema({
         unique:true,
         required:true
     },
-    Accion:{
+    Distancia:{
         type:String,
         required:true
     },
     Fecha_reg:{
-        type:Date,
-        default: Date.now
+        type:String 
     }
 })
 
