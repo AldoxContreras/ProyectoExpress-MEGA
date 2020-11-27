@@ -4,23 +4,18 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require('cors');
-//Libreria Serialport para el arduino
-var SerialPort = require("serialport");
-
 const mongoose = require('mongoose');
 
-mongoose.connect('mongodb+srv://NormaG:Perrafina1_@cluster0.7swjn.mongodb.net/MEGA', {useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://NormaG:Perrafina1_@cluster0.7swjn.mongodb.net/MEGA', { useNewUrlParser: true, useUnifiedTopology: true });
 
 require('./models/empleado') //Schema a utilizar en el proyecto
 require('./models/cliente')
 require('./models/usuario')
-require('./models/arduino')
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/usuarios');
 var empleadoRouter = require('./routes/empleados');
-var clienteRouter = require('./routes/clientes');
-var arduinoRouter = require('./routes/arduinos');
+var clienteRouter = require('./routes/clientes')
 
 
 var app = express();
@@ -48,7 +43,6 @@ app.use('/', indexRouter);
 app.use('/usuario', usersRouter);
 app.use('/empleado', empleadoRouter);
 app.use('/cliente', clienteRouter);
-app.use('/arduino', arduinoRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

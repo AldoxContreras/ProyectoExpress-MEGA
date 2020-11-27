@@ -1,48 +1,30 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+mongoose.set('useCreateIndex', true);
 
-mongoose.set('useCreateIndex', true)
+
 const ClienteSchema = new mongoose.Schema({
+    id: { type: String },
+    Nombre: { type: String, required: true },
+    Apellido1: { type: String, require: true },
+    Apellido2: { type: String },
+    Direccion: { type: String },
+    Telefono: { type: String },
+    Estado: { type: String },
+    Cita: [{
+        id_cita: { type: Number, unique: false },
+        Fecha_Hora: { type: Date },
+        Motivo: { type: String },
+        Estado: { type: String },
+        id_Empleado: { type: String },
+        Matricula_Vehiculo: { type: String }
+    }, { sparse: true }],
+    Vehiculo: [{
+        Matricula: { type: String, unique: false },
+        Marca: { type: String },
+        Modelo: { type: String }
+    }, { unique: false }]
 
-    id:{
-        type: String,
-        required: true,
-        unique: true
-    },
-    Nombre:{
-        type: String,
-        required: true
-    },
-    Apellido1:{
-        type: String,
-        required: true,
-    },
-    Apellido2:{
-        type: String,
-        //required: false,
-    },
-    Direccion:{
-        type: String,
-        required: true,
+});
 
-    },
-    Telefono:{
-        type: String,
-        required: true,
-    },
-    Estado:{
-        type: String,
-        required: true,
-    },
-    Cita:{
-        type: Array,
-        required: true,
-        unique: true,
-    },
-    Vehiculo:{
-        type: Array,
-        required: true,
-        unique: true,
-    }
-
-})
-mongoose.model('Cliente', ClienteSchema) //para poner nombre al schema
+mongoose.model('Cliente', ClienteSchema);
+ClienteSchema.index({ id_cita: 1 }, { sparse: true });
