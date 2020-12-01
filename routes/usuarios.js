@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
+
 const mongoose = require('mongoose');
 const Usuarios = mongoose.model('Usuario');
+const bcrypt = require('bcrypt');
 const Clientes = mongoose.model('Cliente');
 
 //METODO CONSULTAR TODO
@@ -90,7 +91,7 @@ router.put('/', async(req, res) => {
         const salt = await bcrypt.genSalt(10)
         const contracifrado = await bcrypt.hash(req.body.Contrasena, salt)
 
-        let usuario_mod = await Usuarios.findByIdAndUpdate({ id: req.body.id }, { //actualizar los datos 
+        let usuario_mod = await Usuarios.findOneAndUpdate({ id: req.body.id }, { //actualizar los datos 
             Usuario: req.body.Usuario,
             Contrasena: contracifrado
         }, {
@@ -98,8 +99,6 @@ router.put('/', async(req, res) => {
     })
     res.send(usuario_mod)
 });
-
-
 
     //METODO ELIMINAR
 router.post('/borrar', async(req, res) => {
@@ -111,7 +110,7 @@ router.post('/borrar', async(req, res) => {
     res.send(usuario)
 });
 
-router.get('/:codigo', async(req, res) => {
+router.get('/:id', async(req, res) => {
     let usuario = await Usuarios.findOne({ id: req.params.id })
     if (!usuario) {
         return res.status(404).send("Usuario no encontrado")
@@ -122,7 +121,7 @@ router.get('/:codigo', async(req, res) => {
 //-------------------------- Sección móvil -----------------------------------
 
 //Inicio de sesión para móvil
-router.post('/iniciocliente', [
+router.post('/inicio', [
     check('Usuario').isLength({ min: 1 }),
     check('Contrasena').isLength({ min: 5 })
 
