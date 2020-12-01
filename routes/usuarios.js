@@ -59,7 +59,7 @@ router.post('/', [
 });
 
 //METODO POST LOGIN
-router.post('/iniciosesion', [ //para iniciar sesion/ inicia post
+router.post('/inicio', [ //para iniciar sesion/ inicia post
     check('Usuario').isLength(), //validacion 
     check('Contrasena').isLength({ min: 5 }) //validacion 
 ], async(req, res) => {
