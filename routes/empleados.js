@@ -88,8 +88,8 @@ router.post('/borrar', async(req, res) => {
     res.send(empleado)
 });
 
-router.get('/:codigo', async(req, res) => {
-    let empleado = await Empleados.findOne({ id: req.params.id })
+router.get('/:id', async(req, res) => {
+    empleado = await Empleados.findOne({ id: req.params.id })
     if (!empleado) {
         return res.status(404).send("Empleado no encontrado")
     }
