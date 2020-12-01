@@ -112,10 +112,10 @@ router.post('/borrar', async(req, res) => {
     res.send(usuario)
 });
 
-router.get('/:id', async(req, res) => {
-    usuario = await Usuarios.findOne({ id: req.params.id })
-    if (!usuario) {
-        return res.status(404).send("Usuario no encontrado")
+router.get('/:id', async(req,res)=>{
+    usuario= await Usuarios.findOne({id:req.params.id,Tipo:"E"})
+    if(!usuario){
+      return res.status(404).send("Usuario no encontrado")
     }
     res.status(200).send(usuario)
 });

@@ -123,11 +123,4 @@ router.put('/nuevovehiculo', async(req, res) => {
     res.status(201).send(cliente);
 }); //Fin de agregar vehiculo
 
-//modificar cita
-router.put('/modificarcita', async(req, res)=>{
-    let citamodificada = await Clientes.update({ "id": req.body.id, "Cita.id_cita": req.body.id_cita }, {"Cita.$.Estado": req.body.Estado, "Cita.$.id_Empleado": req.body.Empleado},
-     { new: true }); 
-     res.send(citamodificada);
-});
-
 module.exports = router;
