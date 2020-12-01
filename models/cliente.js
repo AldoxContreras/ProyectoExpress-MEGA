@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 mongoose.set('useCreateIndex', true);
-var AutoIncrement = require('mongoose-sequence')(mongoose);
+
 
 const ClienteSchema = new mongoose.Schema({
     id: { type: String },
@@ -25,8 +25,6 @@ const ClienteSchema = new mongoose.Schema({
     }, { unique: false }]
 
 });
-ClienteSchema.plugin(AutoIncrement, { id_cita: 'order_seq', inc_field: 'order' });
-
 
 mongoose.model('Cliente', ClienteSchema);
 ClienteSchema.index({ id_cita: 1 }, { sparse: true });

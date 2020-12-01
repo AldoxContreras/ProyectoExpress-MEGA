@@ -1,9 +1,10 @@
 var express = require('express');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
-const bcrypt = require('bcrypt');
+
 const mongoose = require('mongoose');
 const Usuarios = mongoose.model('Usuario');
+const bcrypt = require('bcrypt');
 const Clientes = mongoose.model('Cliente');
 
 //METODO CONSULTAR TODO
@@ -39,6 +40,7 @@ router.post('/', [
     check('Tipo').isLength({ min: 1 }),
 ], async(req, res) => {
     const errors = validationResult(req); //
+
     if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() }); //status 422 entidad no procesable
     } //
@@ -47,7 +49,7 @@ router.post('/', [
         // const  nombrecifrado=await bcrypt.hash(req.body.nombre,salt)//para que el nombre sea cifrado
         //usuario = new Usuarios(req.body)
         //llenar objetos en partes
-    usuario = new Usuarios({
+    let usuario = new Usuarios({
         id: req.body.id,
         Usuario: req.body.Usuario,
         Contrasena: contracifrado, //ponemos variable  nombrecifrado para que mande cifrado
@@ -58,7 +60,7 @@ router.post('/', [
 });
 
 //METODO POST LOGIN
-router.post('/inicio',[ //para iniciar sesion/ inicia post
+router.post('/inicio', [ //para iniciar sesion/ inicia post
     check('Usuario').isLength(), //validacion 
     check('Contrasena').isLength({ min: 5 }) //validacion 
 ], async(req, res) => {
@@ -97,13 +99,16 @@ router.put('/', async(req,res) => {
     {
         new: true
     })
+    res.send(usuario_mod)
+});
+
     //METODO ELIMINAR
 router.post('/borrar', async(req, res) => {
     const usuario = await Usuarios.findOne({ id: req.body.id })
     if (!usuario) {
         return res.status(400).send("usuario no encontrado")
     }
-    usuario_eliminado = await Usuarios.findOneAndDelete({ id: req.body.id })
+    let usuario_eliminado = await Usuarios.findOneAndDelete({ id: req.body.id })
     res.send(usuario)
 });
 
@@ -118,7 +123,7 @@ router.get('/:id', async(req,res)=>{
 //-------------------------- Sección móvil -----------------------------------
 
 //Inicio de sesión para móvil
-router.post('/iniciocliente', [
+router.post('/inicio', [
     check('Usuario').isLength({ min: 1 }),
     check('Contrasena').isLength({ min: 5 })
 
@@ -135,7 +140,7 @@ router.post('/iniciocliente', [
     //Seccion donde compara la contraseña del formulario con la de la BDD
     const comparapass = await bcrypt.compare(req.body.Contrasena, usuario.Contrasena);
     if (!comparapass) {
-        return res.status(400).sent('Usuario o contraseña incorrecto');
+        return res.status(400).send('Usuario o contraseña incorrecto');
     }
     //Valida que el usuario sea del tipo cliente
     if (usuario.Tipo == "C") {
