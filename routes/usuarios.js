@@ -119,7 +119,7 @@ router.get('/:id', async(req, res) => {
 //-------------------------- Sección móvil -----------------------------------
 
 //Inicio de sesión para móvil
-router.post('/iniciocliente', [
+router.post('/inicio', [
     check('Usuario').isLength({ min: 1 }),
     check('Contrasena').isLength({ min: 5 })
 
