@@ -11,16 +11,18 @@ const mongoose = require('mongoose');
 
 mongoose.connect('mongodb+srv://NormaG:Perrafina1_@cluster0.7swjn.mongodb.net/MEGA', { useNewUrlParser: true, useUnifiedTopology: true });
 
-require('./models/empleado') //Schema a utilizar en el proyecto
+require('./models/empleado') 
 require('./models/cliente')
 require('./models/usuario')
-require('./models/arduino')
+//Schema a utilizar en el proyecto de iot
+require('./models/arduino') 
 
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/usuarios');
 var empleadoRouter = require('./routes/empleados');
 var clienteRouter = require('./routes/clientes');
+//Ruta para los metodos get y post para arduino
 var arduinoRouter = require('./routes/arduinos');
 
 

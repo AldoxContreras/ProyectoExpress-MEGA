@@ -1,22 +1,24 @@
 var express = require('express');
 var router = express.Router();
 const { check, validationResult } = require('express-validator');
+//Libreria para conectar el arduino
 var SerialPort = require("serialport");
 
 
-//const bcrypt = require('bcrypt');
-const mongoose = require('mongoose');
-const Arduinos = mongoose.model('Arduino'); //importar el schema del models
 
+const mongoose = require('mongoose');
+//Se importa el Schema de Arduino
+const Arduinos = mongoose.model('Arduino');
+//Se indica el puerto de conexion con el arduino
 var arduinoCOMPort = "COM3";
 const ReadLine =SerialPort.parsers.Readline
 
-
+//Se inicializa la conexion con el arduino
 var arduinoSerialPort = new SerialPort(arduinoCOMPort, {  
     baudRate: 9600
    },true);
 
-//Esto es un salto de linea
+//Agrega un salto de linea
 const parser= arduinoSerialPort.pipe(new ReadLine({delimiter: '\r\n'}))
 //Encargada de sobreescribirse con la info del sensor
 let valor=""
@@ -26,7 +28,7 @@ router.get('/verdistancia', async (req,res)=>{
     res.send({valor})
 })
 
-//consultar Todo
+//consultar todos los datos de la bd
 router.get('/', async (req,res)=>{
   
   let distancias = await Arduinos.find()
@@ -39,7 +41,7 @@ router.get('/', async (req,res)=>{
   
 });
 
-//
+//Almacena los datos del sensor en la base de datos
 router.post('/', async (req,res)=>{
     let numero = await Arduinos.find().count() + 1
       var arduinodistancia = new Arduinos({    
@@ -59,8 +61,6 @@ router.post('/', async (req,res)=>{
 
   //Lee la info del sensor y la sobreescribe
   parser.on('data',function(data) {
-     
-      //console.log(data);
       valor = data.toString('utf8'); 
     });
 
